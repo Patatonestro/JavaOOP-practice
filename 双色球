@@ -1,0 +1,83 @@
+import java.util.*;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        int[] userNums=userInput();
+        int[] answer=pool();
+        compare(userNums,answer);
+    }
+    //compare
+    public static void compare(int[] userInput,int[] answer){
+        int redHit=0;
+        boolean blueHit=false;
+
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if(userInput[i]==answer[j]){
+                    redHit++;
+                    break;
+                }
+            }
+        }
+        if (userInput[6]==answer[6]){
+            blueHit=true;
+        }
+        System.out.println("red: "+redHit+"blue: "+blueHit);
+    }
+    //用户
+    public static int[] userInput(){
+        int[] arr=new int[7];
+        Scanner sc=new Scanner(System.in);
+        for (int i = 0; i < arr.length-1; i++) {
+
+            System.out.printf("输入第%d个红球",i+1);
+            int rednum=sc.nextInt();
+            if (rednum>=1&&rednum<=33){
+                boolean flag= contains(arr,rednum);
+                if (!flag){
+                    arr[i]=rednum;
+                }else{
+                    System.out.println("号码已存在！");
+                    i--;
+                }
+            }else{
+                System.out.println("1-33！");
+                i--;
+            }
+        }
+        System.out.printf("输入篮球");
+        int bluenum=sc.nextInt();
+        if (bluenum>=1&&bluenum<=16){
+            arr[arr.length-1]=bluenum;
+        }
+        return arr;
+    }
+    //奖池
+    public static int[] pool(){
+        int[] answer=new int[7];
+        Random r=new Random();
+        int index=0;
+        while(index<6) {
+            int redans=r.nextInt(33)+1;
+            boolean flag= contains(answer,redans);
+            if (!flag){
+                answer[index]=redans;
+                index++;
+            }
+        }
+        answer[answer.length-1]=r.nextInt(16)+1;
+        for (int i = 0; i < answer.length-1; i++) {
+            System.out.println(answer[i]);
+        }
+        System.out.println(answer[answer.length-1]);
+        return answer;
+    }
+    public static boolean contains(int[] arr, int num){
+        for (int i:arr){
+            if(i==num){
+                return true;
+            }
+        } return false;
+    }
+}
